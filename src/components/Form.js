@@ -12,17 +12,35 @@ class Form extends Component {
         };
 
         this.validateForm = this.validateForm.bind(this);
+        this.checkName = this.checkName.bind(this);
+        this.checkEmail = this.checkEmail.bind(this);
+        this.checkPhone = this.checkPhone.bind(this);
+        this.checkUrl = this.checkUrl.bind(this);
     }
 
     validateForm() {
       const { onFormValidation: sendMessage } = this.props;
       const isFormInvalidMessage = 'Form is Incomplete!';
       const isFormValidMessage = 'Form is Complete!';
+      const {
+        isEmailValid,
+        isNameValid,
+        isPhoneValid,
+        isUrlValid
+      } = this.state;
+
+      console.log({
+        isEmailValid,
+        isNameValid,
+        isPhoneValid,
+        isUrlValid
+      });
+      
       if (
-        this.isValidName() &&
-        this.isValidEmail() &&
-        this.isValidPhone() &&
-        this.isValidUrl()
+        isEmailValid &&
+        isNameValid &&
+        isPhoneValid &&
+        isUrlValid
       ) {
         sendMessage(isFormValidMessage)
       } else {
@@ -30,21 +48,61 @@ class Form extends Component {
       }
     }
 
-    isValidName() {
-      return false;
+    checkName(e) {
+      const value = e.target.value;
+
+      if (
+        typeof value === 'string' &&
+        value.length >= 3 &&
+        value.length <= 30 &&
+        (/^[a-zA-Z]+$/.test(value))
+      ) {
+        this.setState({isNameValid: true});
+      } else {
+        this.setState({isNameValid: false});
+      }
     }
 
-    isValidEmail() {
-      return false;
+    checkEmail(e) {
+      const value = e.target.value;
+      const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      
+      if (
+        typeof value === 'string' &&
+        (emailRegEx.test(value))
+      ) {
+        this.setState({isEmailValid: true});
+      } else {
+        this.setState({isEmailValid: false});
+      }
     }
 
-    isValidPhone() {
-      return false;
+    checkPhone(e) {
+      const value = e.target.value;
+      
+      if (
+        typeof value === 'string' &&
+        value.length === 10 &&
+        value.charAt(0) !== '0' &&
+        value.charAt(0) !== '1'
+      ) {
+        this.setState({isPhoneValid: true});
+      } else {
+        this.setState({isPhoneValid: false});
+      }
     }
 
-    isValidUrl() {
-      return false;
-    }    
+    checkUrl(e) {
+      const value = e.target.value;
+
+      if (
+        typeof value === 'string'
+      ) {
+        this.setState({isUrlValid: true});
+      } else {
+        this.setState({isUrlValid: false});
+      }
+    }
     
     render() {
         return (
@@ -53,19 +111,31 @@ class Form extends Component {
             <form>
               <div className="form-group">
                 <label>Name:</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  onChange={this.checkName}
+                />
               </div>
               <div className="form-group">
                 <label>Email:</label>
-                <input type="email" />
+                <input
+                  type="email"
+                  onChange={this.checkEmail}
+                />
               </div>
               <div className="form-group">
                 <label>Phone:</label>
-                <input type="tel" />
+                <input
+                  type="tel"
+                  onChange={this.checkPhone}
+                />
               </div>
               <div className="form-group">
                 <label>Blog URL:</label>
-                <input type="url" />
+                <input
+                  type="url"
+                  onChange={this.checkUrl}
+                />
               </div>
               <div className="small-6 small-centered text-center columns">
                   <a
