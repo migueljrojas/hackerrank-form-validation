@@ -28,13 +28,6 @@ class Form extends Component {
         isPhoneValid,
         isUrlValid
       } = this.state;
-
-      console.log({
-        isEmailValid,
-        isNameValid,
-        isPhoneValid,
-        isUrlValid
-      });
       
       if (
         isEmailValid &&
@@ -69,7 +62,7 @@ class Form extends Component {
       
       if (
         typeof value === 'string' &&
-        (emailRegEx.test(value))
+        emailRegEx.test(value)
       ) {
         this.setState({isEmailValid: true});
       } else {
@@ -94,9 +87,11 @@ class Form extends Component {
 
     checkUrl(e) {
       const value = e.target.value;
+      const urlRegEx = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig;
 
       if (
-        typeof value === 'string'
+        typeof value === 'string' &&
+        urlRegEx.test(value)
       ) {
         this.setState({isUrlValid: true});
       } else {
